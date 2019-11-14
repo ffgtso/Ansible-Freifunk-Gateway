@@ -98,6 +98,9 @@ protocol ospf {
 		if net ~ [192.168.0.0/16+] then reject;
 		accept;
 	};
+{% if ospf_instanceid is defined %}
+	instance id {{ospf_instanceid}};
+{% endif %}
 	area 0.0.0.0 {
 		interface "bat*" {
 			stub;

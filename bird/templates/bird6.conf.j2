@@ -54,10 +54,21 @@ protocol device {
 	scan time 10;
 };
 
+{% if ipv6_direkt_ausleiten is defined and ipv6_direkt_ausleiten %}
+protocol static {
+        table ffnet;
+        preference 1000;
+        route ::/0 via {{ ansible_default_ipv6.gateway }};
+};
+{% endif %}
+
 protocol ospf {
 	table ffnet;
 	import filter freifunk;
 	export all;
+{% if ospf_instanceid is defined %}
+	instance id {{ospf_instanceid}};
+{% endif %}
 	area 0.0.0.0 {
 		interface "bat*" {
 			stub;
